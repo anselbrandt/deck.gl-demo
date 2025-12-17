@@ -36,6 +36,8 @@ export default class IconClusterLayer<
   DataT extends { [key: string]: any } = any,
   ExtraProps extends {} = {}
 > extends CompositeLayer<Required<IconLayerProps<DataT>> & ExtraProps> {
+  static layerName = "IconClusterLayer";
+
   state!: {
     data: (PointFeature<DataT> | ClusterFeature<DataT>)[];
     index: Supercluster<DataT, DataT>;

@@ -114,22 +114,24 @@ function App({
         sizeMinPixels: 6,
       });
   return (
-    <DeckGL
-      controller
-      width={1000}
-      height={800}
-      layers={[layer]}
-      views={MAP_VIEW}
-      initialViewState={INITIAL_VIEW_STATE}
-      onViewStateChange={hideTooltip}
-      onClick={expandTooltip}
-    >
-      <Map
-        mapboxAccessToken={MAPBOX_TOKEN}
-        mapStyle="mapbox://styles/mapbox/light-v9"
-      />
-      {hoverInfo && renderTooltip(hoverInfo)}
-    </DeckGL>
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+      <div style={{ width: 1000, height: 800, position: "relative" }}>
+        <DeckGL
+          controller
+          layers={[layer]}
+          views={MAP_VIEW}
+          initialViewState={INITIAL_VIEW_STATE}
+          onViewStateChange={hideTooltip}
+          onClick={expandTooltip}
+        >
+          <Map
+            mapboxAccessToken={MAPBOX_TOKEN}
+            mapStyle="mapbox://styles/mapbox/light-v9"
+          />
+          {hoverInfo && renderTooltip(hoverInfo)}
+        </DeckGL>
+      </div>
+    </div>
   );
 }
 
