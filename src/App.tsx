@@ -9,6 +9,8 @@ import IconClusterLayer from "./icon-cluster-layer";
 import type { IconClusterLayerPickingInfo } from "./icon-cluster-layer";
 import type { IconLayerProps } from "@deck.gl/layers";
 import type { PickingInfo, MapViewState } from "@deck.gl/core";
+import ICON_MAPPING from "./data/location-icon-mapping.json";
+import ICON_ATLAS from "./data/location-icon-atlas.png";
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -70,8 +72,8 @@ function renderTooltip(info: IconClusterLayerPickingInfo<Meterite>) {
 
 function App({
   data = DATA_URL,
-  iconMapping = "/location-icon-mapping.json",
-  iconAtlas = "/location-icon-atlas.png",
+  iconMapping = ICON_MAPPING,
+  iconAtlas = ICON_ATLAS,
   showCluster = true,
 }) {
   const [hoverInfo, setHoverInfo] =
