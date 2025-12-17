@@ -1,79 +1,32 @@
 import "./App.css";
-import { Map, Source, Layer } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
-import type { LayerProps } from "react-map-gl/mapbox";
-
-const clusterLayer: LayerProps = {
-  id: "clusters",
-  type: "circle",
-  source: "earthquakes",
-  filter: ["has", "point_count"],
-  paint: {
-    "circle-color": [
-      "step",
-      ["get", "point_count"],
-      "#51bbd6",
-      100,
-      "#f1f075",
-      750,
-      "#f28cb1",
-    ],
-    "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40],
-  },
-};
-
-const clusterCountLayer: LayerProps = {
-  id: "cluster-count",
-  type: "symbol",
-  source: "earthquakes",
-  filter: ["has", "point_count"],
-  layout: {
-    "text-field": "{point_count_abbreviated}",
-    "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-    "text-size": 12,
-  },
-};
-
-const unclusteredPointLayer: LayerProps = {
-  id: "unclustered-point",
-  type: "circle",
-  source: "earthquakes",
-  filter: ["!", ["has", "point_count"]],
-  paint: {
-    "circle-color": "#11b4da",
-    "circle-radius": 4,
-    "circle-stroke-width": 1,
-    "circle-stroke-color": "#fff",
-  },
-};
+import { DeckGL } from "@deck.gl/react";
+import { Map } from "react-map-gl/mapbox";
+import { ZoomWidget } from "@deck.gl/react";
+import type { MapViewState } from "@deck.gl/core";
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
+const INITIAL_VIEW_STATE: MapViewState = {
+  longitude: -122.41669,
+  latitude: 37.7853,
+  zoom: 13,
+};
+
 function App() {
   return (
-    <Map
-      mapboxAccessToken={MAPBOX_TOKEN}
-      initialViewState={{
-        longitude: -100,
-        latitude: 40,
-        zoom: 3.5,
-      }}
-      style={{ width: 1000, height: 800 }}
-      mapStyle="mapbox://styles/mapbox/light-v9"
+    <DeckGL
+      initialViewState={INITIAL_VIEW_STATE}
+      controller
+      width={1000}
+      height={800}
     >
-      <Source
-        id="earthquakes"
-        type="geojson"
-        data="https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson"
-        cluster={true}
-        clusterMaxZoom={14}
-        clusterRadius={50}
-      >
-        <Layer {...clusterLayer} />
-        <Layer {...clusterCountLayer} />
-        <Layer {...unclusteredPointLayer} />
-      </Source>
-    </Map>
+      <Map
+        mapboxAccessToken={MAPBOX_TOKEN}
+        mapStyle="mapbox://styles/mapbox/light-v9"
+      />
+      <ZoomWidget />
+    </DeckGL>
   );
 }
 
